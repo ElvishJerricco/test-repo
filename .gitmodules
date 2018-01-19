@@ -1,0 +1,6 @@
+[submodule "stackage2nix"]
+	path = stackage2nix
+	url = https://github.com/typeable/stackage2nix
+[submodule "lts-haskell"]
+	path = lts-haskell
+	url = https://github.com/fpco/lts-haskell
