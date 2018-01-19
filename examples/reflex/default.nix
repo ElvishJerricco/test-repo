@@ -1,7 +1,7 @@
 import ../../snapshot ({ ... }: {
   nixpkgs.mypkgs.compilers = {
-    myghc.packages = p: with p; [backend common frontend];
-    myghcjs.packages = p: with p; [common frontend];
+    myghc.targets = p: with p; [backend common frontend];
+    myghcjs.targets = p: with p; [common frontend];
   };
 
   packages = {

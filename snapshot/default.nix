@@ -26,8 +26,8 @@ let
               type = either package str;
               default = "ghc802";
             };
-            options.packages = mkOption {
-              description = "packages";
+            options.targets = mkOption {
+              description = "targets";
               default = _: [];
               type = unspecified;
             };
@@ -100,7 +100,7 @@ let
     config.project = boot-lib.mapAttrs (_: { src, args, compilers, ... }:
       let haskellLib = nixpkgs.callPackage (config.haskell-modules-dir nixpkgs + /lib.nix) {};
           nixpkgs = import src args;
-      in boot-lib.mapAttrs (_: { ghc, packages, ... }:
+      in boot-lib.mapAttrs (_: { ghc, targets, ... }:
         let
           makeSet = pkgs: ghc:
             let self = pkgs.callPackage (config.haskell-modules-dir pkgs) {
@@ -119,7 +119,7 @@ let
                 mkDerivation = args: super.mkDerivation ({ doCheck = false; } // args);
               };
             };
-            in self // { devShell = self.shellFor { inherit packages; }; };
+            in self // { devShell = self.shellFor { packages = targets; }; };
           ghcDrv =
             if builtins.typeOf ghc == "string"
               then nixpkgs.buildPackages.haskell.compiler.${ghc}
@@ -146,8 +146,8 @@ in nixpkgs-boot.stdenv.mkDerivation {
       mkdir -p $out
       ${optionalString (conf.config.nixpkgs != {}) (unlinesMapAttrs conf.config.nixpkgs (pkgsname: { compilers, ... }:
         optionalString (compilers != {})
-          (unlinesMapAttrs compilers (compilername: { packages, ... }: let
-            selected = packages conf.config.project.${pkgsname}.${compilername};
+          (unlinesMapAttrs compilers (compilername: { targets, ... }: let
+            selected = targets conf.config.project.${pkgsname}.${compilername};
           in optionalString (selected != []) ''
             mkdir -p $out/${pkgsname}/${compilername}
             ${concatMapStringsSep "\n" (p: ''

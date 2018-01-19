@@ -5,14 +5,14 @@ in {
     args.crossSystem = systems.raspberryPi;
     compilers.armghc = {
       ghc = "ghc822";
-      packages = p: with p; [hello];
+      targets = p: with p; [hello];
     };
   };
   nixpkgs.aarch64pkgs = {
     args.crossSystem = systems.aarch64-multiplatform;
     compilers.aarch64ghc = {
       ghc = "ghc822";
-      packages = p: with p; [hello];
+      targets = p: with p; [hello];
     };
   };
 
