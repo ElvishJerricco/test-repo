@@ -3,11 +3,7 @@
 in {
   nixpkgs.mypkgs.compilers = {
     myghc = {};
-    myghcjs = {
-      ghc = project.mypkgs.pkgs.haskell.compiler.ghcjsHEAD.override (drv: {
-        bootPkgs = project.mypkgs.myghc;
-      });
-    };
+    myghcjs.ghc = "ghcjsHEAD";
   };
 
   packages = let
